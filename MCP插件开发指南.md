@@ -2,214 +2,372 @@
 
 ## 1. 插件概述
 
-MCP插件是MCP（模型上下文协议）系统的扩展模块，用于扩展MCP系统的功能。通过插件机制，可以在不修改MCP核心代码的情况下，添加新的功能。
+MCP插件是扩展MCP平台功能的独立模块，遵循特定接口规范，可以被MCP平台动态加载和使用。插件机制是MCP平台实现功能扩展的核心方式。
 
-## 2. 插件开发流程
+### 1.1 插件特性
 
-### 2.1 创建Maven项目
+- **可插拔**：插件可以独立启用或禁用
+- **松耦合**：插件与核心系统通过接口交互
+- **可配置**：插件支持独立配置
+- **热插拔**：支持运行时动态加载和卸载（高级特性）
 
-创建一个Maven项目，并在pom.xml中添加以下依赖：
+### 1.2 插件类型
+
+MCP支持以下几种插件类型：
+
+- **功能插件**：提供特定业务功能
+- **工具插件**：提供实用工具
+- **集成插件**：与第三方系统集成
+- **增强插件**：增强现有功能
+
+## 2. 插件架构
+
+### 2.1 插件模块结构
+
+一个标准的MCP插件包含以下组件：
+
+- **插件描述符**：定义插件元数据
+- **插件接口**：定义插件功能
+- **插件实现**：实现插件功能
+- **插件配置**：插件配置属性
+- **插件资源**：插件需要的资源文件
+
+### 2.2 插件生命周期
+
+插件的生命周期包括以下阶段：
+
+1. **发现**：系统发现插件
+2. **加载**：加载插件类和资源
+3. **初始化**：初始化插件
+4. **启动**：启动插件
+5. **停止**：停止插件
+6. **卸载**：卸载插件
+
+## 3. 开发一个简单插件
+
+### 3.1 创建插件项目
+
+创建一个标准的Maven项目，添加以下依赖：
 
 ```xml
-<dependencies>
-    <!-- 依赖插件API -->
-    <dependency>
-        <groupId>com.wwj</groupId>
-        <artifactId>mcp-plugin-api</artifactId>
-    </dependency>
-    
-    <!-- 依赖插件核心 -->
-    <dependency>
-        <groupId>com.wwj</groupId>
-        <artifactId>mcp-plugin-core</artifactId>
-        <version>${project.version}</version>
-    </dependency>
-</dependencies>
+<dependency>
+    <groupId>com.wwj</groupId>
+    <artifactId>mcp-plugin-api</artifactId>
+    <version>${mcp.version}</version>
+    <scope>provided</scope>
+</dependency>
 ```
 
-### 2.2 实现插件接口
+### 3.2 定义插件接口
 
-创建一个实现`McpPlugin`接口的类，示例：
+在`mcp-plugin-api`模块中定义插件接口：
 
 ```java
+package com.wwj.plugin.api.example;
+
+public interface ExamplePlugin {
+    String processData(String input);
+    void initialize();
+    void shutdown();
+}
+```
+
+### 3.3 实现插件
+
+创建插件实现类：
+
+```java
+package com.example.plugin;
+
+import com.wwj.plugin.api.annotation.MCP;
+import com.wwj.plugin.api.example.ExamplePlugin;
+import org.springframework.stereotype.Component;
+
 @Component
-public class MyPlugin implements McpPlugin {
-
-    private static final String PLUGIN_ID = "com.example.my-plugin";
-    private static final String PLUGIN_NAME = "我的插件";
-    private static final String PLUGIN_VERSION = "1.0.0";
-    private static final String PLUGIN_DESCRIPTION = "这是一个示例插件";
-    private static final String PLUGIN_AUTHOR = "开发者名称";
+@MCP(name = "example-plugin", version = "1.0.0")
+public class ExamplePluginImpl implements ExamplePlugin {
 
     @Override
-    public String getPluginId() {
-        return PLUGIN_ID;
-    }
-
-    @Override
-    public String getName() {
-        return PLUGIN_NAME;
-    }
-
-    @Override
-    public String getVersion() {
-        return PLUGIN_VERSION;
-    }
-
-    @Override
-    public String getDescription() {
-        return PLUGIN_DESCRIPTION;
-    }
-
-    @Override
-    public String getAuthor() {
-        return PLUGIN_AUTHOR;
+    public String processData(String input) {
+        return "Processed: " + input;
     }
 
     @Override
     public void initialize() {
-        // 插件初始化逻辑
+        // 初始化逻辑
     }
 
     @Override
-    public void destroy() {
-        // 插件销毁逻辑
+    public void shutdown() {
+        // 清理逻辑
     }
 }
 ```
 
-### 2.3 实现MCP工具
+### 3.4 添加插件配置
 
-使用`@MCPTool`注解标记类为MCP工具，示例：
+创建配置类：
 
 ```java
-@Slf4j
-@Component
-@MCPTool(
-    name = "我的工具",
-    description = "这是一个示例工具",
-    version = "1.0.0",
-    category = "示例分类"
-)
-public class MyMcpTool {
+package com.example.plugin.config;
 
-    @MCPToolOperation(
-        name = "执行操作",
-        description = "示例操作描述",
-        parameters = {
-            @MCPToolOperation.Parameter(
-                name = "input",
-                description = "输入参数",
-                required = true,
-                type = "String"
-            )
-        },
-        returnDescription = "操作结果"
-    )
-    public String performAction(String input) {
-        log.info("执行操作: {}", input);
-        return "处理结果: " + input;
-    }
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.stereotype.Component;
+
+@Component
+@ConfigurationProperties(prefix = "mcp.plugin.example")
+public class ExamplePluginProperties {
+    private boolean enabled = true;
+    private String apiKey;
+    
+    // Getter and Setter methods
 }
 ```
 
-### 2.4 添加配置信息
-
-在`resources`目录下创建`META-INF/spring.factories`文件：
-
-```properties
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  com.example.plugin.config.MyPluginAutoConfiguration
-```
+### 3.5 添加自动配置
 
 创建自动配置类：
 
 ```java
+package com.example.plugin.config;
+
+import com.example.plugin.ExamplePluginImpl;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
 @Configuration
-@ComponentScan("com.example.plugin")
-public class MyPluginAutoConfiguration {
-    // 配置逻辑
+@ConditionalOnProperty(name = "mcp.plugin.example.enabled", havingValue = "true", matchIfMissing = true)
+public class ExamplePluginAutoConfiguration {
+
+    @Bean
+    public ExamplePluginImpl examplePlugin() {
+        return new ExamplePluginImpl();
+    }
 }
 ```
 
-## 3. 插件开发规范
+### 3.6 配置META-INF
 
-### 3.1 命名规范
+在`resources/META-INF/spring.factories`中添加：
 
-- 包名：com.wwj.plugin.{插件名}
-- 插件ID：com.wwj.{插件名}
-- 类名：使用驼峰命名法，如MyPlugin, MyService等
+```
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.example.plugin.config.ExamplePluginAutoConfiguration
+```
 
-### 3.2 代码规范
+## 4. 高级插件开发
 
-- 使用Lombok简化代码
-- 添加完整的JavaDoc文档
-- 使用统一的日志框架（SLF4J + Lombok @Slf4j）
-- 遵循阿里巴巴Java开发手册规范
+### 4.1 插件工具开发
 
-### 3.3 接口设计规范
+MCP支持以工具形式开发插件，例如天气查询工具：
 
-- 接口参数与返回值应使用简单的数据类型或DTO
-- 异常处理：使用统一的异常体系
-- 接口应提供完整的参数验证
+```java
+package com.example.plugin.tool;
 
-## 4. 插件发布与部署
+import com.wwj.plugin.api.annotation.Tool;
+import org.springframework.stereotype.Component;
 
-### 4.1 打包插件
+@Component
+@Tool(name = "weather", description = "获取天气信息")
+public class WeatherTool {
+
+    @Tool.Action(name = "getWeather", description = "获取指定城市的天气")
+    public WeatherResponse getWeather(String city) {
+        // 实现获取天气的逻辑
+        return new WeatherResponse();
+    }
+}
+```
+
+### 4.2 插件事件机制
+
+插件可以使用事件机制进行通信：
+
+```java
+// 定义事件
+public class WeatherUpdateEvent extends DomainEvent {
+    private final String city;
+    private final WeatherData weatherData;
+    
+    // Constructor, getters...
+}
+
+// 发布事件
+@Autowired
+private DomainEventPublisher eventPublisher;
+
+public void updateWeather(String city, WeatherData data) {
+    // 业务逻辑...
+    eventPublisher.publish(new WeatherUpdateEvent(city, data));
+}
+
+// 订阅事件
+@EventListener
+public void handleWeatherUpdate(WeatherUpdateEvent event) {
+    // 处理事件...
+}
+```
+
+### 4.3 插件依赖管理
+
+插件可以声明对其他插件的依赖：
+
+```java
+@MCP(
+    name = "advanced-weather-plugin",
+    version = "1.0.0",
+    dependencies = {
+        @MCPDependency(name = "basic-weather-plugin", version = ">=0.5.0"),
+        @MCPDependency(name = "location-plugin", version = ">=1.0.0")
+    }
+)
+public class AdvancedWeatherPluginImpl implements AdvancedWeatherPlugin {
+    // 实现...
+}
+```
+
+## 5. 插件最佳实践
+
+### 5.1 插件设计原则
+
+- **单一职责**：一个插件只做一件事
+- **接口优先**：先定义接口，再实现功能
+- **配置驱动**：支持通过配置调整行为
+- **容错处理**：妥善处理异常情况
+- **资源管理**：合理管理资源，避免泄漏
+
+### 5.2 插件测试
+
+创建专门的测试类：
+
+```java
+@SpringBootTest
+@AutoConfigureMockMvc
+public class ExamplePluginTests {
+
+    @Autowired
+    private ExamplePlugin examplePlugin;
+    
+    @Test
+    public void testProcessData() {
+        String result = examplePlugin.processData("test");
+        assertEquals("Processed: test", result);
+    }
+}
+```
+
+### 5.3 插件文档
+
+为插件提供完整的文档：
+
+- 功能描述
+- 配置选项
+- 使用示例
+- 依赖要求
+- 常见问题
+
+## 6. 插件部署与分发
+
+### 6.1 打包插件
 
 使用Maven打包插件：
 
-```bash
-mvn clean package
+```xml
+<build>
+    <plugins>
+        <plugin>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-maven-plugin</artifactId>
+            <configuration>
+                <classifier>exec</classifier>
+            </configuration>
+        </plugin>
+    </plugins>
+</build>
 ```
 
-### 4.2 部署插件
+### 6.2 发布插件
 
-将打包好的JAR文件放到MCP系统的插件目录下：
+插件可以通过以下方式发布：
 
+- Maven仓库
+- Git仓库
+- 自定义插件市场
+
+### 6.3 安装插件
+
+在主应用中添加插件依赖：
+
+```xml
+<dependency>
+    <groupId>com.example</groupId>
+    <artifactId>example-plugin</artifactId>
+    <version>1.0.0</version>
+</dependency>
 ```
-{MCP_HOME}/plugins/{插件名}-{版本}.jar
+
+## 7. 插件常见问题
+
+### 7.1 插件冲突
+
+当多个插件提供相同功能时，可以使用`@Primary`注解指定优先级。
+
+### 7.2 插件兼容性
+
+使用版本约束确保插件兼容性：
+
+```java
+@MCP(name = "example-plugin", 
+     version = "1.0.0", 
+     mcpVersion = ">=2.0.0")
 ```
 
-### 4.3 启用插件
+### 7.3 插件性能优化
 
-在MCP系统的配置文件中添加插件ID：
+- 避免插件初始化时进行重量级操作
+- 使用懒加载模式加载资源
+- 合理使用缓存提高性能
 
-```yaml
-mcp:
-  plugins:
-    enabled:
-      - com.wwj.{插件名}
+## 8. 示例插件
+
+### 8.1 天气查询插件
+
+提供天气查询功能：
+
+```java
+@MCP(name = "weather-plugin", version = "1.0.0")
+public class WeatherPluginImpl implements WeatherPlugin {
+
+    @Autowired
+    private WeatherApiClient apiClient;
+    
+    @Override
+    public WeatherData getWeather(String city) {
+        return apiClient.queryWeather(city);
+    }
+}
 ```
 
-## 5. 插件测试
+### 8.2 文档管理插件
 
-### 5.1 单元测试
+提供文档管理功能：
 
-为插件的核心功能编写单元测试，确保功能正确。
+```java
+@MCP(name = "doc-plugin", version = "1.0.0")
+public class DocPluginImpl implements DocPlugin {
 
-### 5.2 集成测试
-
-在MCP环境中测试插件的功能，确保插件能够正常加载和使用。
-
-## 6. 示例插件
-
-可以参考`mcp-plugin-weather`项目作为示例，了解插件的完整实现。
-
-## 7. 常见问题
-
-### 7.1 插件无法加载
-
-- 检查JAR包是否放在正确的目录
-- 检查插件ID是否配置正确
-- 查看MCP系统日志，了解具体错误
-
-### 7.2 插件功能不可用
-
-- 检查插件是否正确初始化
-- 检查需要的依赖是否齐全
-- 检查Spring Bean是否正确注册
-
-## 8. 联系方式
-
-如有问题，请联系MCP开发团队。
+    @Autowired
+    private DocRepository repository;
+    
+    @Override
+    public void saveDoc(Document doc) {
+        repository.save(doc);
+    }
+    
+    @Override
+    public Document getDoc(String id) {
+        return repository.findById(id).orElse(null);
+    }
+}
+```
