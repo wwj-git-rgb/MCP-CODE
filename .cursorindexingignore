@@ -1,3 +1,43 @@
+# 编译生成的目录
+target/
+*.class
 
-# Don't index SpecStory auto-save files, but allow explicit context inclusion via @ references
-.specstory/**
+# Maven的临时文件
+.mvn/
+mvnw
+mvnw.cmd
+
+# IDE相关文件
+.idea/
+*.iml
+.vscode/
+.project
+.classpath
+.settings/
+
+# 临时文件目录
+.temp/
+.tmp/
+tmp/
+
+# 日志文件
+*.log
+*.log.*
+
+# 打包文件
+*.jar
+*.war
+*.ear
+*.zip
+*.tar.gz
+
+# 本地配置文件
+application-local.yml
+application-local.properties
+
+# Cursor特定文件
+.cursor/
+.specstory/
+
+# Node.js模块
+node_modules/
