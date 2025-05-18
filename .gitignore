@@ -1,3 +1,125 @@
-.specstory
-# SpecStory explanation file
-.specstory/.what-is-this.md
+### Java ###
+# 编译生成的class文件
+*.class
+
+# 日志文件
+*.log
+*.log.*
+
+# BlueJ文件
+*.ctxt
+
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
+
+# 打包生成的文件
+*.jar
+*.war
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+# 虚拟机崩溃日志
+hs_err_pid*
+
+### Maven ###
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
+.mvn/wrapper/maven-wrapper.jar
+
+### IntelliJ IDEA ###
+.idea/
+*.iws
+*.iml
+*.ipr
+*.ids
+*.orig
+out/
+.idea_modules/
+
+### Eclipse ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+build/
+
+### VS Code ###
+.vscode/
+.code-workspace
+
+### Mac OS ###
+.DS_Store
+
+### Windows ###
+# Windows缩略图缓存
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Recycle Bin used on file shares
+$RECYCLE.BIN/
+
+### Node.js ###
+# 依赖
+node_modules/
+npm-debug.log
+yarn-error.log
+yarn-debug.log
+.pnpm-debug.log
+.node_repl_history
+.npm
+.eslintcache
+
+### Others ###
+# 临时文件
+*.swp
+*.swo
+*~
+*.bak
+*.tmp
+tmp/
+temp/
+
+# 应用程序特定的文件
+application*.yml
+application*.yaml
+application*.properties
+!application.yml
+!application.yaml
+!application.properties
+!application-example.yml
+!application-example.yaml
+!application-example.properties
+
+# 敏感配置文件
+*.key
+*.pem
+*.p12
+*.pfx
+*.jks
+*.keystore
+*.truststore
+
+# 项目特定的忽略
+.cursor/
+.specstory/
+.temp/
