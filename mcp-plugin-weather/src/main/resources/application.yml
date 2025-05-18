@@ -1,0 +1,38 @@
+server:
+  port: 8081
+  servlet:
+    context-path: /mcp-weather
+
+spring:
+  application:
+    name: mcp-plugin-weather
+  
+  # 日志配置
+  logging:
+    level:
+      root: INFO
+      com.wwj: DEBUG
+      
+# MCP插件配置
+mcp:
+  plugin:
+    enabled: true
+    id: com.wwj.weather
+    name: 天气服务
+    version: 1.0.0
+    author: MCP开发团队
+    description: 提供天气查询功能，包括当前天气和天气预报
+  
+  # 天气服务配置
+  weather:
+    # 模拟模式，true表示使用模拟数据，false表示使用真实API
+    mock-mode: true
+    # 缓存配置
+    cache:
+      enabled: true
+      ttl: 300 # 缓存时间，单位秒
+    # API配置，在mock-mode为false时使用
+    api:
+      base-url: https://api.example.com/weather
+      timeout: 5000 # 超时时间，单位毫秒
+      retry: 3 # 重试次数
