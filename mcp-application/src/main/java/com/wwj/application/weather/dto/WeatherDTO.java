@@ -1,44 +1,56 @@
 package com.wwj.application.weather.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import java.io.Serializable;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 
 /**
- * 天气信息数据传输对象
+ * 天气数据DTO
  *
- * @author wenjie wang
+ * @author wenjie
  * @since 1.0.0
  */
 @Data
-public class WeatherDTO implements Serializable {
-
-    private static final long serialVersionUID = 1L;
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class WeatherDTO {
+    /**
+     * 天气ID
+     */
+    private String id;
 
     /**
      * 城市名称
      */
+    @NotBlank(message = "城市名称不能为空")
     private String cityName;
 
     /**
-     * 城市编码
+     * 温度
      */
-    private String cityCode;
+    @NotNull(message = "温度不能为空")
+    private Double temperature;
+
+    /**
+     * 湿度
+     */
+    private Double humidity;
 
     /**
      * 天气状况
      */
-    private String condition;
+    private String weatherCondition;
 
     /**
-     * 温度（摄氏度）
+     * 风速
      */
-    private Double temperature;
-
-    /**
-     * 湿度（百分比）
-     */
-    private Double humidity;
+    private Double windSpeed;
 
     /**
      * 风向
@@ -46,22 +58,7 @@ public class WeatherDTO implements Serializable {
     private String windDirection;
 
     /**
-     * 风力
-     */
-    private String windPower;
-
-    /**
-     * 空气质量指数
-     */
-    private Integer aqi;
-
-    /**
      * 更新时间
      */
-    private String updateTime;
-
-    /**
-     * 数据来源
-     */
-    private String source;
+    private LocalDateTime updateTime;
 }

@@ -5,32 +5,23 @@ import com.wwj.application.weather.dto.WeatherDTO;
 /**
  * 天气应用服务接口
  *
- * @author wenjie wang
+ * @author wenjie
  * @since 1.0.0
  */
 public interface WeatherService {
-
     /**
-     * 获取城市天气信息
+     * 获取指定城市的天气数据
      *
      * @param cityName 城市名称
-     * @return 天气信息数据传输对象
+     * @return 天气数据DTO
      */
     WeatherDTO getWeatherByCity(String cityName);
 
     /**
-     * 根据城市编码获取天气信息
+     * 更新天气数据
      *
-     * @param cityCode 城市编码
-     * @return 天气信息数据传输对象
+     * @param weatherDTO 天气数据DTO
+     * @return 更新后的天气数据DTO
      */
-    WeatherDTO getWeatherByCityCode(String cityCode);
-
-    /**
-     * 强制刷新城市天气信息
-     *
-     * @param cityName 城市名称
-     * @return 天气信息数据传输对象
-     */
-    WeatherDTO refreshWeather(String cityName);
+    WeatherDTO updateWeather(WeatherDTO weatherDTO);
 }

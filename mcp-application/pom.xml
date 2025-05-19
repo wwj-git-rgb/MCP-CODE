@@ -6,49 +6,30 @@
         <groupId>com.wwj</groupId>
         <artifactId>mcp-parent</artifactId>
         <version>0.0.1-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
     </parent>
-
+    
     <artifactId>mcp-application</artifactId>
     <name>mcp-application</name>
-    <description>MCP应用层 - 提供应用服务和业务编排</description>
-
+    <description>MCP应用层模块</description>
+    
     <dependencies>
-        <!-- 内部模块依赖 -->
+        <!-- MCP Domain -->
         <dependency>
             <groupId>com.wwj</groupId>
             <artifactId>mcp-domain</artifactId>
         </dependency>
-        <dependency>
-            <groupId>com.wwj</groupId>
-            <artifactId>mcp-infrastructure</artifactId>
-        </dependency>
-
-        <!-- Spring Boot核心依赖 -->
+        
+        <!-- Spring Boot Web -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter</artifactId>
+            <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
-
-        <!-- 数据校验 -->
+        
+        <!-- Spring Boot Validation -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-validation</artifactId>
         </dependency>
-
-        <!-- 测试依赖 -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-        </dependency>
     </dependencies>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-            </plugin>
-        </plugins>
-    </build>
 </project>

@@ -1,67 +1,68 @@
 package com.wwj.application.documentation.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import java.io.Serializable;
+import javax.validation.constraints.NotBlank;
+import java.time.LocalDateTime;
 
 /**
- * 文档数据传输对象
+ * 文档DTO
  *
- * @author wenjie wang
+ * @author wenjie
  * @since 1.0.0
  */
 @Data
-public class DocumentDTO implements Serializable {
-
-    private static final long serialVersionUID = 1L;
-
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class DocumentDTO {
     /**
      * 文档ID
      */
     private String id;
 
     /**
-     * 文档标题
+     * 标题
      */
+    @NotBlank(message = "文档标题不能为空")
     private String title;
 
     /**
-     * 文档内容
+     * 内容
      */
+    @NotBlank(message = "文档内容不能为空")
     private String content;
+
+    /**
+     * 关键词
+     */
+    private String keywords;
+
+    /**
+     * 创建时间
+     */
+    private LocalDateTime createdTime;
+
+    /**
+     * 更新时间
+     */
+    private LocalDateTime updatedTime;
+
+    /**
+     * 作者
+     */
+    private String author;
 
     /**
      * 文档类型
      */
     private String type;
-
+    
     /**
-     * 创建者
+     * 版本
      */
-    private String creator;
-
-    /**
-     * 创建时间
-     */
-    private String createTime;
-
-    /**
-     * 更新时间
-     */
-    private String updateTime;
-
-    /**
-     * 标签列表
-     */
-    private String tags;
-
-    /**
-     * 文档状态（1: 草稿, 2: 已发布, 3: 已归档）
-     */
-    private Integer status;
-
-    /**
-     * 状态名称
-     */
-    private String statusName;
+    private Integer version;
 }
