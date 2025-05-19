@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.wwj</groupId>
+        <artifactId>mcp-parent</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+    
+    <artifactId>mcp-web</artifactId>
+    <name>mcp-web</name>
+    <description>MCP Web层模块</description>
+    
+    <dependencies>
+        <!-- MCP Application -->
+        <dependency>
+            <groupId>com.wwj</groupId>
+            <artifactId>mcp-application</artifactId>
+        </dependency>
+        
+        <!-- MCP Domain -->
+        <dependency>
+            <groupId>com.wwj</groupId>
+            <artifactId>mcp-domain</artifactId>
+        </dependency>
+        
+        <!-- MCP Starter -->
+        <dependency>
+            <groupId>com.wwj</groupId>
+            <artifactId>mcp-starter</artifactId>
+        </dependency>
+        
+        <!-- Spring Boot Web -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        
+        <!-- Spring Boot Validation -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
+        </dependency>
+        
+        <!-- Swagger UI -->
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-ui</artifactId>
+            <version>1.7.0</version>
+        </dependency>
+    </dependencies>
+</project>
