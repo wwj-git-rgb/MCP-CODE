@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.wwj</groupId>
+        <artifactId>mcp-parent</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+    
+    <artifactId>mcp-starter</artifactId>
+    <name>mcp-starter</name>
+    <description>MCP Starter模块</description>
+    
+    <dependencies>
+        <!-- MCP Modules -->
+        <dependency>
+            <groupId>com.wwj</groupId>
+            <artifactId>mcp-common</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.wwj</groupId>
+            <artifactId>mcp-domain</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.wwj</groupId>
+            <artifactId>mcp-infrastructure</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.wwj</groupId>
+            <artifactId>mcp-application</artifactId>
+        </dependency>
+        
+        <!-- MCP Plugin -->
+        <dependency>
+            <groupId>com.wwj</groupId>
+            <artifactId>mcp-plugin-core</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        
+        <!-- Spring Boot Starter -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+        </dependency>
+        
+        <!-- Spring Boot AutoConfigure -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-autoconfigure</artifactId>
+        </dependency>
+        
+        <!-- Spring Boot Configuration Processor -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
+        </dependency>
+    </dependencies>
+</project>
