@@ -1,74 +1,71 @@
-# MCP - Modular Configuration Platform
+# MCP - Model Context Protocol 实现
 
-MCP是一个基于Spring Boot的模块化配置平台，旨在提供灵活、可扩展的微服务架构解决方案。
+## 项目简介
 
-## 项目概述
+MCP是一个基于Model Context Protocol规范实现的Java开发框架，旨在简化AI模型与工具之间的交互。本项目采用DDD领域驱动设计和整洁架构，实现了可插拔式架构，支持灵活的扩展。
 
-MCP平台采用领域驱动设计（DDD）思想，通过插件化架构实现功能的可插拔性，支持各种业务场景的动态扩展和配置。
+## 架构设计
 
-### 核心特性
+项目采用模块化设计，每个模块都有明确的职责，遵循单一职责原则和依赖倒置原则。
 
-- **模块化设计**：基于DDD和插件化架构
-- **可插拔功能**：支持功能模块的动态启用和禁用
-- **统一配置**：集中管理各模块配置项
-- **接口与实现分离**：遵循依赖倒置原则
-- **丰富的扩展点**：支持自定义功能扩展
+### 模块结构
 
-## 技术栈
+- **mcp-bom**: 依赖管理模块
+- **mcp-common**: 公共组件和工具类
+- **mcp-domain**: 领域模型定义
+- **mcp-infrastructure**: 基础设施实现
+- **mcp-application**: 应用服务
+- **mcp-web**: Web控制层
+- **mcp-spring**: Spring Boot自动配置
+- **mcp-test**: 测试支持
+- **mcp-plugin-api**: 插件API接口
+- **mcp-plugin-core**: 插件核心机制
+- **mcp-plugin-weather**: 天气插件示例
 
-- Java 11+
-- Spring Boot 2.7+
-- Maven 3.6+
-- Spring Data JPA
-- Spring Cloud (可选)
+### 核心组件
 
-## 项目结构
+1. **工具系统 (Tool)**
+   - 定义了统一的工具接口
+   - 支持参数定义和检验
+   - 提供同步和异步调用模式
 
-MCP项目由以下模块组成：
+2. **插件系统 (Plugin)**
+   - 生命周期管理
+   - 动态发现和加载
+   - 可插拔扩展机制
 
-```
-mcp-common        - 公共组件和工具类
-mcp-domain        - 领域模型和服务接口
-mcp-infrastructure - 基础设施实现
-mcp-application   - 应用服务
-mcp-api           - API和工具实现
-mcp-starter       - 自动配置和集成
-mcp-web           - Web控制器和接口
-mcp-plugin-xxx    - 各种功能插件
-```
+3. **自动配置**
+   - 具备条件化配置特性
+   - 按需启用功能模块
+   - 支持外部属性配置
 
 ## 快速开始
 
-### 前置条件
+### 环境要求
 
-- JDK 11 或更高版本
-- Maven 3.6 或更高版本
-- IDE (推荐 IntelliJ IDEA)
+- JDK 17+
+- Maven 3.8+
+- Spring Boot 3.2.0+
 
-### 编译与构建
-
-1. 克隆项目
+### 构建项目
 
 ```bash
-git clone https://github.com/yourusername/MCP.git
-cd MCP
+mvn clean install
 ```
 
-2. 编译项目
+### 使用示例
 
-```bash
-mvn clean install -DskipTests
+#### 1. 添加依赖
+
+```xml
+<dependency>
+    <groupId>com.wwj</groupId>
+    <artifactId>mcp-spring</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+</dependency>
 ```
 
-3. 运行应用
-
-```bash
-java -jar mcp-service/target/mcp-service-1.0.0-SNAPSHOT.jar
-```
-
-### 基本配置
-
-创建`application.yml`配置文件：
+#### 2. 配置属性
 
 ```yaml
 mcp:
@@ -76,150 +73,160 @@ mcp:
   features:
     weather:
       enabled: true
-      api-key: YOUR_API_KEY
+      api-key: your-api-key
+      provider: openweather
     documentation:
       enabled: true
+      storage-path: /data/mcp/docs
+  tools:
+    executor-threads: 10
+    enable-metrics: true
 ```
 
-## 核心模块说明
-
-### 公共层 (mcp-common)
-
-提供全局通用功能，如异常、常量、结果封装等。
-
-### 领域层 (mcp-domain)
-
-定义领域模型和服务接口，是业务核心。
-
-### 基础设施层 (mcp-infrastructure)
-
-实现领域服务接口，提供具体的技术实现。
-
-### 应用层 (mcp-application)
-
-编排业务流程，实现应用服务，处理DTO转换。
-
-### API层 (mcp-api)
-
-实现MCP工具接口，提供具体的工具实现。
-
-### 启动层 (mcp-starter)
-
-提供自动配置，集成所有模块，实现条件装配。
-
-### Web层 (mcp-web)
-
-提供Web接口和控制器，处理HTTP请求。
-
-## 功能模块
-
-### 天气服务模块
-
-提供天气查询功能，支持多种数据源。
+#### 3. 创建自定义工具
 
 ```java
-@Autowired
-private WeatherService weatherService;
+package com.example.tool;
 
-// 获取天气信息
-WeatherData data = weatherService.getWeatherByCity("北京");
-```
+import com.wwj.domain.core.tool.ToolRequest;
+import com.wwj.domain.core.tool.ToolResponse;
+import com.wwj.plugin.api.annotation.MCPTool;
+import com.wwj.plugin.api.annotation.Parameter;
+import com.wwj.plugin.core.tool.AbstractTool;
+import org.springframework.stereotype.Component;
 
-### 文档管理模块
+@Component
+@MCPTool(name = "calculator", description = "简单计算器")
+public class CalculatorTool extends AbstractTool {
 
-提供文档存储和检索功能。
-
-```java
-@Autowired
-private DocumentService documentService;
-
-// 保存文档
-documentService.saveDocument(new Document("title", "content"));
-
-// 获取文档
-Document doc = documentService.getDocumentById("doc123");
-```
-
-## 插件开发
-
-MCP支持通过插件机制扩展功能。详见[MCP插件开发指南](MCP插件开发指南.md)。
-
-简单示例：
-
-```java
-@MCP(name = "example-plugin", version = "1.0.0")
-public class ExamplePluginImpl implements ExamplePlugin {
-
+    @Parameter(name = "operation", description = "运算类型", required = true, enumValues = "[\"+\", \"-\", \"*\", \"/\"]")
+    private String operation;
+    
+    @Parameter(name = "a", description = "第一个数字", required = true)
+    private Double a;
+    
+    @Parameter(name = "b", description = "第二个数字", required = true)
+    private Double b;
+    
     @Override
-    public String processData(String input) {
-        return "Processed: " + input;
+    protected ToolResponse doExecute(ToolRequest request) {
+        try {
+            double result;
+            switch (operation) {
+                case "+":
+                    result = a + b;
+                    break;
+                case "-":
+                    result = a - b;
+                    break;
+                case "*":
+                    result = a * b;
+                    break;
+                case "/":
+                    if (b == 0) {
+                        return ToolResponse.error("除数不能为零");
+                    }
+                    result = a / b;
+                    break;
+                default:
+                    return ToolResponse.error("不支持的运算: " + operation);
+            }
+            return ToolResponse.success(result);
+        } catch (Exception e) {
+            return ToolResponse.error("计算错误: " + e.getMessage());
+        }
     }
 }
 ```
 
-## 配置参考
-
-MCP的配置项以`mcp`为前缀，支持多级配置。
-
-```yaml
-mcp:
-  enabled: true              # 全局开关
-  
-  # 功能模块配置
-  features:
-    weather:
-      enabled: true          # 天气模块开关
-      api-key: YOUR_API_KEY  # API密钥
-      ttl: 3600              # 缓存时间(秒)
-    
-    documentation:
-      enabled: true          # 文档模块开关
-      storage-path: /data/docs  # 存储路径
-```
-
-## 开发规范
-
-详细的开发规范请参考[开发规范](开发规范.md)文档。
-
-## 模块依赖
-
-模块间的依赖关系请参考[模块依赖说明](模块依赖说明.md)文档。
-
-## 常见问题
-
-### 如何添加新功能模块？
-
-1. 在domain层定义接口
-2. 在infrastructure层实现接口
-3. 在starter中添加自动配置
-4. 在配置中启用功能
-
-### 如何替换默认实现？
-
-提供同名接口的自定义实现，并使用@Primary注解：
+#### 4. 测试工具
 
 ```java
-@Service
-@Primary
-public class CustomWeatherService implements WeatherService {
-    // 自定义实现...
+import com.wwj.domain.core.tool.ToolResponse;
+import com.wwj.test.MCPTestContext;
+import org.junit.jupiter.api.Test;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+public class CalculatorToolTest {
+
+    @Test
+    public void testCalculator() {
+        // 创建测试上下文
+        MCPTestContext context = new MCPTestContext();
+        
+        // 注册工具
+        context.registerTool(new CalculatorTool());
+        
+        // 准备参数
+        Map<String, Object> params = new HashMap<>();
+        params.put("operation", "+");
+        params.put("a", 10);
+        params.put("b", 5);
+        
+        // 调用工具
+        ToolResponse response = context.invokeTool("calculator", params);
+        
+        // 验证结果
+        assertThat(response.isSuccess()).isTrue();
+        assertThat(response.getContent()).isEqualTo(15.0);
+    }
+}
+```
+
+## 插件开发
+
+### 创建插件
+
+1. 创建新的Maven模块
+2. 添加依赖mcp-plugin-api和mcp-plugin-core
+3. 实现PluginLifecycle接口
+4. 创建和注册工具
+
+### 插件示例
+
+```java
+@Component
+public class MyPlugin implements PluginLifecycle {
+
+    private final ToolRegistry toolRegistry;
+    
+    public MyPlugin(ToolRegistry toolRegistry) {
+        this.toolRegistry = toolRegistry;
+    }
+    
+    @Override
+    public void initialize() {
+        // 初始化插件
+    }
+    
+    @Override
+    public void start() {
+        // 注册工具
+        toolRegistry.registerTool(new MyCustomTool());
+    }
+    
+    @Override
+    public void stop() {
+        // 取消工具注册
+        toolRegistry.removeTool("my-tool");
+    }
 }
 ```
 
 ## 贡献指南
 
-1. Fork 项目
-2. 创建功能分支 (`git checkout -b feature/amazing-feature`)
-3. 提交变更 (`git commit -m 'Add some amazing feature'`)
-4. 推送到分支 (`git push origin feature/amazing-feature`)
-5. 创建Pull Request
+欢迎提交Issue和Pull Request，请遵循项目的代码规范和提交流程。
+
+## 版本历史
+
+- **0.1.0**: 初始版本，实现核心架构
+- **0.2.0**: 增加插件系统
+- **0.3.0**: 完善测试支持
 
 ## 许可证
 
-本项目采用 MIT 许可证 - 详情请参见 [LICENSE](LICENSE) 文件。
-
-## 联系方式
-
-- 作者：张三
-- 邮箱：support@example.com
-- GitHub：[https://github.com/yourusername](https://github.com/yourusername)
+MIT
