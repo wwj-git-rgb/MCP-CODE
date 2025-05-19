@@ -1,0 +1,5 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.wwj.spring.autoconfigure.MCPAutoConfiguration,\
+com.wwj.spring.autoconfigure.WeatherAutoConfiguration,\
+com.wwj.spring.autoconfigure.DocumentationAutoConfiguration,\
+com.wwj.spring.autoconfigure.ToolAutoConfiguration
