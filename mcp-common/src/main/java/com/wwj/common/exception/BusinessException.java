@@ -1,80 +1,42 @@
 package com.wwj.common.exception;
 
-import com.wwj.common.constants.ResultStatus;
+import com.wwj.common.result.IErrorCode;
 
 /**
- * 业务异常类
+ * 业务异常
  *
- * @author wenjie wang
+ * @author wenjie
  * @since 1.0.0
  */
-public class BusinessException extends BaseException {
-    
+public class BusinessException extends RuntimeException {
     private static final long serialVersionUID = 1L;
 
     /**
-     * 构造函数
+     * 错误码
      */
-    public BusinessException() {
-        super(ResultStatus.BUSINESS_ERROR);
+    private final Integer code;
+
+    public BusinessException(IErrorCode errorCode) {
+        super(errorCode.getMessage());
+        this.code = errorCode.getCode();
     }
 
-    /**
-     * 构造函数
-     * 
-     * @param message 消息
-     */
     public BusinessException(String message) {
-        super(ResultStatus.BUSINESS_ERROR.getCode(), message);
+        super(message);
+        this.code = 500;
     }
 
-    /**
-     * 构造函数
-     * 
-     * @param code    状态码
-     * @param message 消息
-     */
-    public BusinessException(int code, String message) {
-        super(code, message);
-    }
-
-    /**
-     * 构造函数
-     * 
-     * @param message 消息
-     * @param cause   原因
-     */
     public BusinessException(String message, Throwable cause) {
-        super(ResultStatus.BUSINESS_ERROR.getCode(), message, cause);
+        super(message, cause);
+        this.code = 500;
     }
 
-    /**
-     * 构造函数
-     * 
-     * @param code    状态码
-     * @param message 消息
-     * @param cause   原因
-     */
-    public BusinessException(int code, String message, Throwable cause) {
-        super(code, message, cause);
+    public BusinessException(Integer code, String message) {
+        super(message);
+        this.code = code;
     }
 
-    /**
-     * 构造函数
-     * 
-     * @param resultStatus 状态枚举
-     */
-    public BusinessException(ResultStatus resultStatus) {
-        super(resultStatus);
-    }
-
-    /**
-     * 构造函数
-     * 
-     * @param resultStatus 状态枚举
-     * @param cause      原因
-     */
-    public BusinessException(ResultStatus resultStatus, Throwable cause) {
-        super(resultStatus, cause);
+    public Integer getCode() {
+        return code;
     }
 }
