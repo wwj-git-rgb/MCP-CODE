@@ -3,58 +3,25 @@ package com.wwj.domain.weather.service;
 import com.wwj.domain.weather.model.Weather;
 
 /**
- * 天气服务领域接口
+ * 天气领域服务接口
  *
- * @author wenjie wang
+ * @author wenjie
  * @since 1.0.0
  */
 public interface WeatherDomainService {
-
     /**
-     * 获取指定城市的天气信息
+     * 请求天气数据
      *
      * @param cityName 城市名称
-     * @return 天气信息
+     * @return 天气数据
      */
-    Weather getWeatherByCity(String cityName);
+    Weather getWeatherByCityName(String cityName);
 
     /**
-     * 获取指定城市编码的天气信息
+     * 更新天气数据
      *
-     * @param cityCode 城市编码
-     * @return 天气信息
-     */
-    Weather getWeatherByCityCode(String cityCode);
-
-    /**
-     * 从缓存中获取指定城市的天气信息
-     *
-     * @param cityName 城市名称
-     * @return 天气信息（如果缓存中存在）
-     */
-    Weather getWeatherFromCache(String cityName);
-
-    /**
-     * 从外部API源获取指定城市的天气信息
-     *
-     * @param cityName 城市名称
-     * @return 天气信息
-     */
-    Weather getWeatherFromApi(String cityName);
-
-    /**
-     * 更新指定城市的天气信息
-     *
-     * @param weather 天气信息
-     * @return 更新后的天气信息
+     * @param weather 天气数据
+     * @return 更新后的天气数据
      */
     Weather updateWeather(Weather weather);
-
-    /**
-     * 判断城市名称是否有效
-     *
-     * @param cityName 城市名称
-     * @return 是否有效
-     */
-    boolean isValidCity(String cityName);
 }

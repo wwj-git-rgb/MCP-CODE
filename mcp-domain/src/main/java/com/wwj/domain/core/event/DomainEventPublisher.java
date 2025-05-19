@@ -1,24 +1,16 @@
 package com.wwj.domain.core.event;
 
 /**
- * 领域事件发布者接口
+ * 领域事件发布器
  *
- * @author wenjie wang
+ * @author wenjie
  * @since 1.0.0
  */
 public interface DomainEventPublisher {
-
     /**
      * 发布领域事件
      *
      * @param event 领域事件
      */
     void publish(DomainEvent event);
-
-    /**
-     * 异步发布领域事件
-     *
-     * @param event 领域事件
-     */
-    void publishAsync(DomainEvent event);
 }

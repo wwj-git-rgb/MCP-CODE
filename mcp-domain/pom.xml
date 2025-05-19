@@ -6,43 +6,25 @@
         <groupId>com.wwj</groupId>
         <artifactId>mcp-parent</artifactId>
         <version>0.0.1-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
     </parent>
-
+    
     <artifactId>mcp-domain</artifactId>
     <name>mcp-domain</name>
-    <description>MCP领域层 - 定义领域模型和领域服务接口</description>
-
+    <description>MCP领域层模块</description>
+    
     <dependencies>
-        <!-- 内部模块依赖 -->
+        <!-- MCP Common -->
         <dependency>
             <groupId>com.wwj</groupId>
             <artifactId>mcp-common</artifactId>
         </dependency>
-
-        <!-- Spring依赖 -->
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-context</artifactId>
-        </dependency>
+        
+        <!-- Spring Data JPA -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-validation</artifactId>
-        </dependency>
-
-        <!-- 测试依赖 -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-            </plugin>
-        </plugins>
-    </build>
 </project>
