@@ -4,31 +4,19 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.wwj</groupId>
-        <artifactId>mcp-parent</artifactId>
+        <artifactId>parent-bom</artifactId>
         <version>0.0.1-SNAPSHOT</version>
-        <relativePath>../pom.xml</relativePath>
+        <relativePath>../parent-bom/pom.xml</relativePath>
     </parent>
     
     <artifactId>mcp-bom</artifactId>
     <packaging>pom</packaging>
     <name>mcp-bom</name>
-    <description>MCP Bill of Materials</description>
-    
-    <properties>
-        <java.version>17</java.version>
-        <spring-ai.version>1.0.0-RC1</spring-ai.version>
-        <spring-boot.version>3.2.0</spring-boot.version>
-        <jackson.version>2.15.3</jackson.version>
-    </properties>
+    <description>MCP模块依赖管理</description>
     
     <dependencyManagement>
         <dependencies>
             <!-- MCP Modules -->
-            <dependency>
-                <groupId>com.wwj</groupId>
-                <artifactId>mcp-common</artifactId>
-                <version>${project.version}</version>
-            </dependency>
             <dependency>
                 <groupId>com.wwj</groupId>
                 <artifactId>mcp-domain</artifactId>
@@ -46,11 +34,6 @@
             </dependency>
             <dependency>
                 <groupId>com.wwj</groupId>
-                <artifactId>mcp-web</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.wwj</groupId>
                 <artifactId>mcp-plugin-api</artifactId>
                 <version>${project.version}</version>
             </dependency>
@@ -61,26 +44,23 @@
             </dependency>
             <dependency>
                 <groupId>com.wwj</groupId>
+                <artifactId>mcp-plugin-weather</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.wwj</groupId>
+                <artifactId>mcp-spring</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.wwj</groupId>
                 <artifactId>mcp-starter</artifactId>
                 <version>${project.version}</version>
             </dependency>
-            
-            <!-- Spring Boot BOM -->
             <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-dependencies</artifactId>
-                <version>${spring-boot.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-            
-            <!-- Spring AI BOM -->
-            <dependency>
-                <groupId>org.springframework.ai</groupId>
-                <artifactId>spring-ai-bom</artifactId>
-                <version>${spring-ai.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
+                <groupId>com.wwj</groupId>
+                <artifactId>mcp-test</artifactId>
+                <version>${project.version}</version>
             </dependency>
             
             <!-- Spring AI MCP Server -->
@@ -93,28 +73,6 @@
                 <groupId>org.springframework.ai</groupId>
                 <artifactId>spring-ai-starter-mcp-server-webmvc</artifactId>
                 <version>${spring-ai.version}</version>
-            </dependency>
-            
-            <!-- Jackson Dependencies -->
-            <dependency>
-                <groupId>com.fasterxml.jackson.core</groupId>
-                <artifactId>jackson-databind</artifactId>
-                <version>${jackson.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.fasterxml.jackson.core</groupId>
-                <artifactId>jackson-core</artifactId>
-                <version>${jackson.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.fasterxml.jackson.core</groupId>
-                <artifactId>jackson-annotations</artifactId>
-                <version>${jackson.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.fasterxml.jackson.datatype</groupId>
-                <artifactId>jackson-datatype-jsr310</artifactId>
-                <version>${jackson.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
